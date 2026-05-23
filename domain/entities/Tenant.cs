@@ -10,5 +10,7 @@ namespace domain.Entities
         public bool IsActive { get; set; }
         public DateTime Created_at { get; set; }
 
+        // Navigation property for multi-tenant relationship
+        public ICollection<Todo> Todos { get; set; } = new List<Todo>();
     }
 }

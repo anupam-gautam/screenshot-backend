@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using MediatR;
 using FluentValidation;
 using application;
@@ -7,12 +8,13 @@ using infrastructure.Data;
 using application.Interfaces;
 using infrastructure.Repositories;
 using application.Todos.Commands;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // Register infrastructure implementations here.
             // Example:
@@ -27,8 +29,12 @@ namespace infrastructure
             // Register pipeline behavior to run validators for MediatR requests
             services.AddTransient(typeof(MediatR.IPipelineBehavior<,>), typeof(application.ValidationBehavior<,>));
 
-            // Register EF Core in-memory DbContext
-            services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("AppDb"));
+            // Register EF Core with PostgreSQL
+            // Scoped lifetime ensures each HTTP request gets its own DbContext instance
+            // This is essential for multi-tenant data isolation
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")),
+                ServiceLifetime.Scoped);
 
             // Register repository implementations
             services.AddScoped<ITenantRepository, TenantRepository>();
