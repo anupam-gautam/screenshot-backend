@@ -7,6 +7,11 @@ namespace api.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-
+        [HttpGet]
+        public IActionResult GetBooks()
+        {
+            // Implementation for getting books
+            return Ok();
+        }
     }
 }
