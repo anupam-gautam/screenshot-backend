@@ -7,13 +7,13 @@ using application.Todos.Commands;
 
 namespace application.Todos.Handlers
 {
-    public class CreateTenantHandler : IRequestHandler<CreateTenantCommand, int>
+    public class CreateTenantHandler : IRequestHandler<CreateTenantCommand, Guid>
     {
         private readonly ITenantRepository _repository;
 
         public CreateTenantHandler(ITenantRepository repository) => _repository = repository;
 
-        public async Task<int> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
         {
             var tenant = new Tenant
             {

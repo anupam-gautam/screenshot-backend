@@ -8,5 +8,5 @@ namespace application.Todos.Commands
         string Domain,
         string PlanType,
         bool IsActive
-    ) : IRequest<int>;
+    ) : IRequest<Guid>;
 }

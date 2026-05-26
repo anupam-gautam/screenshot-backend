@@ -17,7 +17,7 @@ namespace api.Controllers
         public async Task<IActionResult> Create([FromBody] CreateTenantCommand command)
         {
             var id = await _mediator.Send(command);
-            if(!(id > 0)) return BadRequest("Create Failed");
+            if(!(id != Guid.Empty)) return BadRequest("Create Failed");
             return Ok(id);
         }
     }
